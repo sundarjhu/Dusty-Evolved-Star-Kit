@@ -1,4 +1,7 @@
-import os,math,subprocess,pdb
+import os
+import math
+import subprocess
+import pdb
 import numpy as np
 import astropy.units as u
 import matplotlib.pyplot as plt
@@ -71,7 +74,7 @@ def fit_norm(data, model):
     return stat_array
 
 
-def interpolate_data(model_x,spectra):
+def interpolate_data(model_x, spectra):
     data_wavelength = spectra[0]
     data_flux = spectra[1]
     f = interpolate.interp1d(data_wavelength, data_flux)
@@ -102,10 +105,10 @@ for counter, target in enumerate(targets):
 
     # calculated luminosity and scales outputs
     luminosity = np.power(10.0, distance_norm - math.log10(trials[trial_index]) * -1)
-    scaled_vexp = float(grid_outputs[model_index]['vexp']) * (luminosity / 10000) ** (0.25)
-    scaled_mdot = grid_outputs[model_index]['mdot'] * ((luminosity / 10000) ** 0.75) * (assumed_rgd / 200) ** (0.5)
+    scaled_vexp = float(grid_outputs[model_index]['vexp']) * (luminosity / 10000) ** 0.25
+    scaled_mdot = grid_outputs[model_index]['mdot'] * ((luminosity / 10000) ** 0.75) * (assumed_rgd / 200) ** 0.5
 
-    target_name=(target.split('/')[-1][:15]).replace('IRAS-', 'IRAS ')
+    target_name = (target.split('/')[-1][:15]).replace('IRAS-', 'IRAS ')
     print(target_name)
     latex_array.append((target_name, str(int(round(luminosity/1000))), str(np.round(scaled_vexp, 1)), str(
         int(grid_outputs[model_index]['teff'])), str(int(grid_outputs[model_index]['tinner'])), str(
@@ -164,5 +167,3 @@ a = Table(np.array(latex_array), names=(
     'S16', 'int32', 'f8', 'int32', 'int32', 'f8', 'f8'))
 a['L'] = a['L']*1000
 a.write('output_latex_table.csv', format='csv', overwrite=True)
-
-

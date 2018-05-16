@@ -1,4 +1,8 @@
-import os,shutil,pylab,math,subprocess
+import os
+import shutil
+import pylab
+import math
+import subprocess
 import numpy as np
 import astropy.units as u
 import matplotlib.pyplot as plt
@@ -6,7 +10,7 @@ from fnmatch import fnmatch
 from multiprocessing import cpu_count, Pool
 from functools import partial
 from astropy.units import astrophys
-from astropy.table import Table,Column,vstack
+from astropy.table import Table, Column, vstack
 from matplotlib import rc
 from scipy import interpolate
 import glob
@@ -48,7 +52,7 @@ for item in output_files:
         'odep', np.float64), ('c', np.float64), ('d', np.float64), ('e', np.float64), ('f', np.float64), (
         'g', np.float64), ('h', np.float64), ('mdot', np.float64), ('vexp', np.float64), (
         'i', np.float64)], comments="*", delimiter='', skip_header=46, skip_footer=15))
-    array_info = item.split('/')[2].split('_')
+    array_info = item.split('/')[2].split("_")
     grid_name = Column([str(array_info[0])]*len(output_table), name='grid_name')
     teff = Column([int(array_info[1])]*len(output_table), name='teff')
     tinner = Column([int(array_info[2])]*len(output_table), name='tinner')
