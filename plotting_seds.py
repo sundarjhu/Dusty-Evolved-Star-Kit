@@ -43,9 +43,11 @@ def get_supp_data(file):
 
 # plotting stuff
 if len(input_file) == 1:
-    fig, ax1 = plt.subplots(len(input_file), 1, sharex=True, sharey=True, figsize=(16, 20))
-elif len(input_file) < 3:
-    fig, axs = plt.subplots(len(input_file), 1, sharex=True, sharey=True, figsize=(16, 20))
+    fig, ax1 = plt.subplots(1, 1, sharex=True, sharey=True, figsize=(16, 20))
+elif len(input_file) == 2:
+    fig, axs = plt.subplots(2, 1, sharex=True, sharey=True, figsize=(16, 20))
+elif len(input_file) == 3:
+    fig, axs = plt.subplots(3, 1, sharex=True, sharey=True, figsize=(16, 20))
 else:
     fig, axs = plt.subplots(math.ceil(len(input_file)/3), 3, sharex=True, sharey=True, figsize=(16, 20))
     axs = axs.ravel()
@@ -83,7 +85,7 @@ for counter, target in enumerate(input_file):
         axs[counter].scatter(np.log10(supp_phot_array['wave']), np.log10(
             supp_phot_array['lamflam']), facecolor='white', s=20, edgecolor='k', linewidth=0.5, zorder=1)
 
-    bonus_err=[]
+    bonus_err = []
     for item in os.listdir('./supp_data/'):
         if fnmatch(item, 'err*'+target_name.split(' ')[1]+'*'):
             supp_data = np.array(get_supp_data('supp_data/'+item))
@@ -142,7 +144,9 @@ if len(a) == len(additional_data):
     averages = [('Median'),np.median(a['L']),np.median(a['Av']), np.median(a['GB_p'][a['GB_p'] > 0]), np.median(a['GB_OH']), np.median(a['vexp_predicted']), np.median(a['teff']), np.median(a['tinner']), np.median(a['odep']), np.median(a['mdot']),np.median(a['rgd'])]
     a.add_row(averages)
 
-    a.write('gb_latex_table.txt', format='latex', overwrite=True)
     a.write('gb_latex_table.csv', format='csv', overwrite=True)
+    a['L'] = (a['L']/1000).astype(int)
+    a.write('gb_latex_table.txt', format='latex', overwrite=True)
+
     shutil.copy('gb_latex_table.txt', '/Users/sgoldman/Dropbox/gb_mnras')
     shutil.copy('output_seds.png', '/Users/sgoldman/Dropbox/gb_mnras/figs/GB_seds')

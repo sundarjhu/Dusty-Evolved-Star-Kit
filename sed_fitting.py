@@ -11,6 +11,18 @@ from functools import partial
 from astropy.table import Table, Column
 from matplotlib import rc
 from scipy import interpolate
+'''
+Steve Goldman
+Space Telescope Science Institute
+May 17, 2018
+sgoldman@stsci.edu
+
+This package takes a spectrum (or spectra) in ascii format and fits it/them with a grid of models. 
+The grids used here are converted from output from the DUSTY code (Elitzur & Ivezic 2001, MNRAS, 327, 403) using
+the other script dusty_to_grid.py. The code interpolated and trims a version of the data and calculates the least
+squares value for each grid in the model and the data. The DUSTY outputs are then scaled and returned in files:
+fitting_results.csv and fitting_plotting_output.csv for plotting the results. 
+'''
 
 # fancy fonts
 rc('text', usetex=True)
@@ -22,8 +34,7 @@ plt.rcParams['text.latex.unicode'] = True
 # options
 distance_in_kpc = 8
 assumed_rgd = 200.0000
-grid_dusty = Table.read('aringerOkmh_models.fits')
-grid_outputs = Table.read('aringerOkmh_outputs.fits')
+model_grid = 'aringerOkmh'
 
 # set variables
 targets = []
@@ -51,7 +62,10 @@ for item in os.listdir('./visir_spectra/'):
         targets.append('visir_spectra/'+item)
 
 # example source
-# targets = ['visir_spectra/IRAS-17030-3053_flux_calibrated.txt'] # comment out for all sources
+targets = ['visir_spectra/IRAS-17030-3053_flux_calibrated.txt']  # comment out for all sources
+
+grid_dusty = Table.read(model_grid+'_models.fits')
+grid_outputs = Table.read(model_grid+'_outputs.fits')
 
 
 def get_data(filename):
@@ -103,13 +117,13 @@ for counter, target in enumerate(targets):
     trial_index = argmin % stat_array.shape[1]
 
     # calculated luminosity and scales outputs
-    luminosity = np.power(10.0, distance_norm - math.log10(trials[trial_index]) * -1)
+    luminosity = int(np.power(10.0, distance_norm - math.log10(trials[trial_index]) * -1))
     scaled_vexp = float(grid_outputs[model_index]['vexp']) * (luminosity / 10000) ** 0.25
     scaled_mdot = grid_outputs[model_index]['mdot'] * ((luminosity / 10000) ** 0.75) * (assumed_rgd / 200) ** 0.5
 
     # creates output file
     target_name = (target.split('/')[-1][:15]).replace('IRAS-', 'IRAS ')
-    latex_array.append((target_name, str(int(round(luminosity/1000))), str(np.round(scaled_vexp, 1)), str(
+    latex_array.append((target_name, str(luminosity), str(np.round(scaled_vexp, 1)), str(
         int(grid_outputs[model_index]['teff'])), str(int(grid_outputs[model_index]['tinner'])), str(
         grid_outputs[model_index]['odep']), "%.3E" % float(scaled_mdot)))
 
@@ -134,7 +148,6 @@ for counter, target in enumerate(targets):
 file_a = Table(np.array(latex_array), names=(
     'source', 'L', 'vexp_predicted', 'teff', 'tinner', 'odep', 'mdot'), dtype=(
     'S16', 'int32', 'f8', 'int32', 'int32', 'f8', 'f8'))
-file_a['L'] = file_a['L']*1000
 file_a.write('fitting_results.csv', format='csv', overwrite=True)
 
 # saves plotting file
