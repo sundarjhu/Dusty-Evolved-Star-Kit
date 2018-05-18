@@ -21,9 +21,18 @@ This script converts a directory of DUSTY grids from Elitzur & Ivezic (2001) to 
 https://github.com/ivezic/dusty
 
 """
+
+print()
+for item in os.listdir('.'):
+    if not fnmatch(item, '*.*'):
+        print(item)
+print()
+
+directory_name = input('directory name: ')
+
 spectra_files = []
 
-for root, dirs, files in os.walk("./year4"):
+for root, dirs, files in os.walk("./"+directory_name):
     for name in files:
         if fnmatch(str(name), '*.s*'):
             spectra_files.append(os.path.join(root, name))
@@ -31,7 +40,7 @@ for root, dirs, files in os.walk("./year4"):
 
 output_files = []
 
-for root, dirs, files in os.walk("./year4"):
+for root, dirs, files in os.walk("./"+directory_name):
     for name in files:
         if fnmatch(str(name), '*.out'):
             output_files.append(os.path.join(root, name))
@@ -44,7 +53,7 @@ for item in spectra_files:
     dusty_spectra.append(a)
 
 b = Table(np.array(dusty_spectra))
-b.write('dusty_models.fits', format='fits', overwrite=True)
+b.write(directory_name+'_models.fits', format='fits', overwrite=True)
 
 output_array = Table()
 for item in output_files:
@@ -52,12 +61,12 @@ for item in output_files:
         'odep', np.float64), ('c', np.float64), ('d', np.float64), ('e', np.float64), ('f', np.float64), (
         'g', np.float64), ('h', np.float64), ('mdot', np.float64), ('vexp', np.float64), (
         'i', np.float64)], comments="*", delimiter='', skip_header=46, skip_footer=15))
-    array_info = item.split('/')[2].split("_")
+    array_info = item.split('/')[-1].split("_")
     grid_name = Column([str(array_info[0])]*len(output_table), name='grid_name')
     teff = Column([int(array_info[1])]*len(output_table), name='teff')
-    tinner = Column([int(array_info[2])]*len(output_table), name='tinner')
+    tinner = Column([int(array_info[2].split('.')[0])]*len(output_table), name='tinner')
     output_table.add_columns((grid_name, teff, tinner), indexes=[0, 0, 0])
     print(output_table)
     output_array = vstack([output_array, output_table])
 
-output_array.write('dusty_outputs.fits', format='fits', overwrite=True)
+output_array.write(directory_name+'_outputs.fits', format='fits', overwrite=True)

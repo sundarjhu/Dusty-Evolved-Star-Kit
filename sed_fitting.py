@@ -6,7 +6,6 @@ import numpy as np
 import astropy.units as u
 import matplotlib.pyplot as plt
 from fnmatch import fnmatch
-from multiprocessing import cpu_count, Pool
 from functools import partial
 from astropy.table import Table, Column
 from matplotlib import rc
@@ -35,6 +34,8 @@ plt.rcParams['text.latex.unicode'] = True
 distance_in_kpc = 8
 assumed_rgd = 200.0000
 model_grid = 'aringerOkmh'
+wavelength_min = 8.2
+wavelength_max = 13.2
 
 # set variables
 targets = []
@@ -57,19 +58,24 @@ ntrials = 1000
 trials = np.linspace(min_norm, max_norm, ntrials)
 
 # for multiple sources
-for item in os.listdir('./visir_spectra/'):
-    if fnmatch(item, "*flux_calibrated.txt"):
-        targets.append('visir_spectra/'+item)
+for item in os.listdir('./target_data/'):
+    if fnmatch(item, "*csv"):
+        targets.append('target_data/'+item)
 
 # example source
-targets = ['visir_spectra/IRAS-17030-3053_flux_calibrated.txt']  # comment out for all sources
+targets = ['visir_spectra/IRAS-17030-3053_flux_calibrated.csv']  # comment out for all sources
 
 grid_dusty = Table.read(model_grid+'_models.fits')
 grid_outputs = Table.read(model_grid+'_outputs.fits')
 
 
 def get_data(filename):
-    x, y = np.loadtxt(filename, delimiter=',', unpack=1, skiprows=110)
+    table = Table.read(filename)
+    x = np.array(table.columns[0])
+    y = np.array(table.columns[1])
+    index = np.where((x > wavelength_min) & (x < wavelength_max))
+    x = x[index]
+    y = y[index]
     y = y * u.Jy
     y = y.to(u.W/(u.m * u.m), equivalencies=u.spectral_density(x * u.um))
     return x, np.array(y)

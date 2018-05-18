@@ -6,12 +6,21 @@ import shutil
 import numpy as np
 import astropy.units as u
 import matplotlib.pyplot as plt
+from glob import glob
 from fnmatch import fnmatch
 from multiprocessing import cpu_count, Pool
 from functools import partial
 from astropy.table import Table, Column
 from matplotlib import rc
 from scipy import interpolate
+'''
+Steve Goldman
+Space Telescope Science Institute
+May 17, 2018
+sgoldman@stsci.edu
+
+This script is for plotting the outputs of the sed_fitting script.
+'''
 
 rc('text', usetex=True)
 plt.rcParams['font.family'] = 'serif'
@@ -25,7 +34,9 @@ grid_outputs = Table.read(str(input_file['grid_name'][0])+'_outputs.fits')
 
 
 def get_data(filename):
-    x, y = np.loadtxt(filename, delimiter=',', unpack=1, skiprows=110)
+    table = Table.read(filename)
+    x = np.array(table.columns[0])
+    y = np.array(table.columns[1])
     y = y * u.Jy
     y = y.to(u.W/(u.m * u.m), equivalencies=u.spectral_density(x * u.um))
     return x, np.array(y)
@@ -61,43 +72,44 @@ for counter, target in enumerate(input_file):
     y_model = y_model * input_file[counter]['norm']
 
     # gets supplementary spectra
-    bonus_spec = []
-    for item in os.listdir('./supp_data/'):
-        if fnmatch(item, 'IRS*'+target_name.split(' ')[1]+'*'):
-            supp_data = np.array(get_supp_data('supp_data/'+item))
-            bonus_spec.append(supp_data)
+    if glob("supp_data/*"+target_name+'*'):
+        bonus_spec = []
+        for item in os.listdir('./supp_data/'):
+            if fnmatch(item, 'IRS*'+target_name.split(' ')[1]+'*'):
+                supp_data = np.array(get_supp_data('supp_data/'+item))
+                bonus_spec.append(supp_data)
 
-    # plots supplementary spectra
-    for i in range(0, len(bonus_spec)):
-        supp_plot_array = Table(np.array([[row[0], row[1]] for row in bonus_spec[i]]), names=('wave', 'lamflam'))
-        axs[counter].plot(np.log10(supp_plot_array['wave']), np.log10(
-            supp_plot_array['lamflam']), c='k', linewidth=0.5, zorder=2)
+        # plots supplementary spectra
+        for i in range(0, len(bonus_spec)):
+            supp_plot_array = Table(np.array([[row[0], row[1]] for row in bonus_spec[i]]), names=('wave', 'lamflam'))
+            axs[counter].plot(np.log10(supp_plot_array['wave']), np.log10(
+                supp_plot_array['lamflam']), c='k', linewidth=0.5, zorder=2)
 
-    bonus_phot=[]
-    for item in os.listdir('./supp_data/'):
-        if fnmatch(item, 'phot*'+target_name.split(' ')[1]+'*'):
-            supp_data = np.array(get_supp_data('supp_data/'+item))
-            bonus_phot.append(supp_data)
+        bonus_phot=[]
+        for item in os.listdir('./supp_data/'):
+            if fnmatch(item, 'phot*'+target_name.split(' ')[1]+'*'):
+                supp_data = np.array(get_supp_data('supp_data/'+item))
+                bonus_phot.append(supp_data)
 
-    # plots supplementary phot
-    for i in range(0, len(bonus_phot)):
-        supp_phot_array = Table(np.array([[row[0], row[1]] for row in bonus_phot[i]]), names=('wave', 'lamflam'))
-        axs[counter].scatter(np.log10(supp_phot_array['wave']), np.log10(
-            supp_phot_array['lamflam']), facecolor='white', s=20, edgecolor='k', linewidth=0.5, zorder=1)
+        # plots supplementary phot
+        for i in range(0, len(bonus_phot)):
+            supp_phot_array = Table(np.array([[row[0], row[1]] for row in bonus_phot[i]]), names=('wave', 'lamflam'))
+            axs[counter].scatter(np.log10(supp_phot_array['wave']), np.log10(
+                supp_phot_array['lamflam']), facecolor='white', s=20, edgecolor='k', linewidth=0.5, zorder=1)
 
-    bonus_err = []
-    for item in os.listdir('./supp_data/'):
-        if fnmatch(item, 'err*'+target_name.split(' ')[1]+'*'):
-            supp_data = np.array(get_supp_data('supp_data/'+item))
-            bonus_err.append(supp_data)
+        bonus_err = []
+        for item in os.listdir('./supp_data/'):
+            if fnmatch(item, 'err*'+target_name.split(' ')[1]+'*'):
+                supp_data = np.array(get_supp_data('supp_data/'+item))
+                bonus_err.append(supp_data)
 
-    # plots supplementary err
-    for i in range(0, len(bonus_err)):
-        supp_err_array = Table(np.array([[row[0], row[1]] for row in bonus_err[i]]), names=('wave', 'lamflam'))
-        supp_err_array['lamflam'][supp_err_array['lamflam'] == 0] = np.nan
-        yerror = np.log10(supp_phot_array['lamflam'])*supp_err_array['lamflam']/supp_phot_array['lamflam']
-        axs[counter].errorbar(np.log10(supp_phot_array['wave']), np.log10(
-            supp_phot_array['lamflam']), yerr=yerror, color='0.3', ls='none', linewidth=0.2, zorder=1)
+        # plots supplementary err
+        for i in range(0, len(bonus_err)):
+            supp_err_array = Table(np.array([[row[0], row[1]] for row in bonus_err[i]]), names=('wave', 'lamflam'))
+            supp_err_array['lamflam'][supp_err_array['lamflam'] == 0] = np.nan
+            yerror = np.log10(supp_phot_array['lamflam'])*supp_err_array['lamflam']/supp_phot_array['lamflam']
+            axs[counter].errorbar(np.log10(supp_phot_array['wave']), np.log10(
+                supp_phot_array['lamflam']), yerr=yerror, color='0.3', ls='none', linewidth=0.2, zorder=1)
 
     # logscale
     x_model = np.log10(x_model)
