@@ -30,10 +30,10 @@ plt.rcParams['mathtext.fontset'] = 'dejavuserif'
 plt.rcParams['text.usetex'] = True
 plt.rcParams['text.latex.unicode'] = True
 
-# options
+# OPTIONS
 distance_in_kpc = 50
 assumed_rgd = 400.0000
-model_grid = 'year4'
+model_grid = 'year4'  # other choices include aringerOkmh, astronomical,
 wavelength_min = 6.3
 wavelength_max = 13.9
 
@@ -59,9 +59,9 @@ distance_norm = math.log10(((int(distance_in_kpc)/4.8482E-9)**2)/1379)
 trials = np.linspace(min_norm, max_norm, ntrials)
 
 # for multiple sources
-for item in os.listdir('./visir_spectra/'):
+for item in os.listdir('./target_data/'):
     if fnmatch(item, "*csv"):
-        targets.append('visir_spectra/'+item)
+        targets.append('target_data/'+item)
 
 # example source
 # targets = ['visir_spectra/IRAS-17030-3053_flux_calibrated.csv']  # comment out for all sources
