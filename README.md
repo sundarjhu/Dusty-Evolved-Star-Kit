@@ -17,10 +17,10 @@ SED-fitting python script for fitting data from evolved stars (photometry or spe
 * normalizations range to try 
 * the number of values in that normalization range
 
-Several grids are in the models directory (change using the model_grid variable), but you can also create your own model grid.
+Several grids are in the models directory (change using the model_grid variable), but you can also create your own model grid. To to this: 
 
 1. Run dusty
 2. Put all outputs (spectra files .s* and output files *.out) into a directory of the same name (see example grid directories)
 3. Run the dusty_to_grid.py script
 
-This will create to fits files containing all spectra (*directoryname*_models.fits), and all outputs (*directoryname*_outputs.fits)
+This will create two fits files containing all spectra (*directoryname*_models.fits), and all outputs (*directoryname*_outputs.fits).
