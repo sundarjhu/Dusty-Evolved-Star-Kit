@@ -1,6 +1,6 @@
-#DESK#
 <img src="https://3ff009b6523c0c1f8b94-091582592a5f780b4bac3b68414d35fd.ssl.cf5.rackcdn.com/default/_superImage/President-Hayes-Desk.jpg" width="200">
 
+#DESK#
 
 SED-fitting python script for fitting data from evolved stars (photometry or spectra) with DUSTY models. Package contains the fitting script, a simple plotting script, and a script for converting the output from DUSTY to two fits files. 
 
