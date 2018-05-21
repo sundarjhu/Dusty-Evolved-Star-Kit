@@ -1,3 +1,7 @@
+![GitHub Logo](desk.jpg)
+Format: ![Alt Text](url)
+
+
 SED-fitting python script for fitting data from evolved stars (photometry or spectra) with DUSTY models. Package contains the fitting script, a simple plotting script, and a script for converting the output from DUSTY to two fits files. 
 
 **Input**: csv with first column wavelength in um and second column flux in Jy (File can have other columns).
