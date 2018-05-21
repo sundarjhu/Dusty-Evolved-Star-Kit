@@ -29,8 +29,8 @@ plt.rcParams['text.usetex'] = True
 plt.rcParams['text.latex.unicode'] = True
 
 input_file = Table.read('fitting_plotting_outputs.csv')
-grid_dusty = Table.read(str(input_file['grid_name'][0])+'_models.fits')
-grid_outputs = Table.read(str(input_file['grid_name'][0])+'_outputs.fits')
+grid_dusty = Table.read('models/'+str(input_file['grid_name'][0])+'_models.fits')
+grid_outputs = Table.read('models/'+str(input_file['grid_name'][0])+'_outputs.fits')
 
 
 def get_data(filename):
@@ -72,10 +72,10 @@ for counter, target in enumerate(input_file):
     y_model = y_model * input_file[counter]['norm']
 
     # gets supplementary spectra
-    if glob("supp_data/*"+target_name+'*'):
+    if glob("supp_data/*"+target_name.split(' ')[-1]+'*'):
         bonus_spec = []
         for item in os.listdir('./supp_data/'):
-            if fnmatch(item, 'IRS*'+target_name.split(' ')[1]+'*'):
+            if fnmatch(item, 'IRS*'+target_name.split(' ')[-1]+'*'):
                 supp_data = np.array(get_supp_data('supp_data/'+item))
                 bonus_spec.append(supp_data)
 
@@ -87,7 +87,7 @@ for counter, target in enumerate(input_file):
 
         bonus_phot=[]
         for item in os.listdir('./supp_data/'):
-            if fnmatch(item, 'phot*'+target_name.split(' ')[1]+'*'):
+            if fnmatch(item, 'phot*'+target_name.split(' ')[-1]+'*'):
                 supp_data = np.array(get_supp_data('supp_data/'+item))
                 bonus_phot.append(supp_data)
 
@@ -99,7 +99,7 @@ for counter, target in enumerate(input_file):
 
         bonus_err = []
         for item in os.listdir('./supp_data/'):
-            if fnmatch(item, 'err*'+target_name.split(' ')[1]+'*'):
+            if fnmatch(item, 'err*'+target_name.split(' ')[-1]+'*'):
                 supp_data = np.array(get_supp_data('supp_data/'+item))
                 bonus_err.append(supp_data)
 
@@ -142,10 +142,11 @@ fig.savefig('output_seds.png', dpi=500, bbox_inches='tight')
 
 
 a = Table.read('fitting_results.csv')
-additional_data = Table.read('GB_additional_data.csv', format='csv')
 
 
-if len(a) == len(additional_data):
+
+if len(a) == 21:
+    additional_data = Table.read('supp_data/GB_additional_data.csv', format='csv')
     a.add_column(additional_data['Av'], index=2)
     a.add_column(additional_data['GB_p'], index=3)
     a.add_column(additional_data['GB_OH'], index=4)

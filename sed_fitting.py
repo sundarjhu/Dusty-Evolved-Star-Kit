@@ -31,11 +31,15 @@ plt.rcParams['text.usetex'] = True
 plt.rcParams['text.latex.unicode'] = True
 
 # options
-distance_in_kpc = 8
-assumed_rgd = 200.0000
-model_grid = 'aringerOkmh'
-wavelength_min = 8.2
-wavelength_max = 13.2
+distance_in_kpc = 50
+assumed_rgd = 400.0000
+model_grid = 'year4'
+wavelength_min = 6.3
+wavelength_max = 13.9
+
+min_norm = 1e-14
+max_norm = 1e-10
+ntrials = 1000
 
 # set variables
 targets = []
@@ -52,21 +56,18 @@ follow_up_normilazation = []
 distance_norm = math.log10(((int(distance_in_kpc)/4.8482E-9)**2)/1379)
 
 # normalization range
-min_norm = 1e-14
-max_norm = 1e-10
-ntrials = 1000
 trials = np.linspace(min_norm, max_norm, ntrials)
 
 # for multiple sources
-for item in os.listdir('./target_data/'):
+for item in os.listdir('./visir_spectra/'):
     if fnmatch(item, "*csv"):
-        targets.append('target_data/'+item)
+        targets.append('visir_spectra/'+item)
 
 # example source
-targets = ['visir_spectra/IRAS-17030-3053_flux_calibrated.csv']  # comment out for all sources
+# targets = ['visir_spectra/IRAS-17030-3053_flux_calibrated.csv']  # comment out for all sources
 
-grid_dusty = Table.read(model_grid+'_models.fits')
-grid_outputs = Table.read(model_grid+'_outputs.fits')
+grid_dusty = Table.read('models/'+model_grid+'_models.fits')
+grid_outputs = Table.read('models/'+model_grid+'_outputs.fits')
 
 
 def get_data(filename):
