@@ -11,11 +11,11 @@ SED-fitting python script for fitting data from evolved stars (photometry or spe
 **Output**: Results file with best fit model, as well as a results file with specifics for plotting the output. 
 
 **Options**: In the sed_fitting.py you can specify:
-	The model grid
-	distance (in kpc)
-	the wavelength range to fit
-	normalizations range to try 
-	the number of values in that normalization range
+* The model grid
+* distance (in kpc)
+* the wavelength range to fit
+* normalizations range to try 
+* the number of values in that normalization range
 
 Several grids are in the models directory (change using the model_grid variable), but you can also create your own model grid.
 
