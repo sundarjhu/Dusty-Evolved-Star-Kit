@@ -28,8 +28,3 @@ Several grids are in the models directory (change using the model_grid variable)
 3. Run the dusty_to_grid.py script
 
 This will create two fits files containing all spectra (*directoryname*_models.fits), and all outputs (*directoryname*_outputs.fits).
-
-USING DESK
-=========
-
-All of the important script files can be found in "/dusty-evolved_star_kit/sed_fitting"
