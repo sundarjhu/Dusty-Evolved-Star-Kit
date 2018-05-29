@@ -1,4 +1,4 @@
-<img src="https://3ff009b6523c0c1f8b94-091582592a5f780b4bac3b68414d35fd.ssl.cf5.rackcdn.com/default/_superImage/President-Hayes-Desk.jpg" width="200">
+<!-- <img src="https://3ff009b6523c0c1f8b94-091582592a5f780b4bac3b68414d35fd.ssl.cf5.rackcdn.com/default/_superImage/President-Hayes-Desk.jpg" width="200"> -->
 
 DESK
 ======
@@ -28,3 +28,8 @@ Several grids are in the models directory (change using the model_grid variable)
 3. Run the dusty_to_grid.py script
 
 This will create two fits files containing all spectra (*directoryname*_models.fits), and all outputs (*directoryname*_outputs.fits).
+
+USING DESK
+=========
+
+All of the important script files can be found in "/dusty-evolved_star_kit/sed_fitting"
