@@ -16,26 +16,19 @@ Space Telescope Science Institute
 May 17, 2018
 sgoldman@stsci.edu
 
-This package takes a spectrum (or spectra) in ascii format and fits it/them with a grid of models. 
+This package takes a spectrum (or spectra) in csv format and fits it/them with a grid of models. 
 The grids used here are converted from output from the DUSTY code (Elitzur & Ivezic 2001, MNRAS, 327, 403) using
-the other script dusty_to_grid.py. The code interpolated and trims a version of the data and calculates the least
+the other script dusty_to_grid.py. The code interpolates and trims a version of the data and calculates the least
 squares value for each grid in the model and the data. The DUSTY outputs are then scaled and returned in files:
-fitting_results.csv and fitting_plotting_output.csv for plotting the results. 
+fitting_results.csv and fitting_plotting_output.csv (for plotting the results). 
 '''
-
-# fancy fonts
-rc('text', usetex=True)
-plt.rcParams['font.family'] = 'serif'
-plt.rcParams['mathtext.fontset'] = 'dejavuserif'
-plt.rcParams['text.usetex'] = True
-plt.rcParams['text.latex.unicode'] = True
 
 # OPTIONS
 distance_in_kpc = 50
-assumed_rgd = 400.0000
+assumed_gas_to_dust_ratio = 400.0000
 model_grid = 'year4'  # other choices include aringerOkmh, astronomical,
-wavelength_min = 6.3
-wavelength_max = 13.9
+wavelength_min = 6.3  # range of data that you want to fit
+wavelength_max = 13.9  
 
 min_norm = 1e-14
 max_norm = 1e-10
@@ -126,7 +119,7 @@ for counter, target in enumerate(targets):
     # calculated luminosity and scales outputs
     luminosity = int(np.power(10.0, distance_norm - math.log10(trials[trial_index]) * -1))
     scaled_vexp = float(grid_outputs[model_index]['vexp']) * (luminosity / 10000) ** 0.25
-    scaled_mdot = grid_outputs[model_index]['mdot'] * ((luminosity / 10000) ** 0.75) * (assumed_rgd / 200) ** 0.5
+    scaled_mdot = grid_outputs[model_index]['mdot'] * ((luminosity / 10000) ** 0.75) * (assumed_gas_to_dust_ratio / 200) ** 0.5
 
     # creates output file
     target_name = (target.split('/')[-1][:15]).replace('IRAS-', 'IRAS ')
