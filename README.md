@@ -1,6 +1,7 @@
 
 Dusty-Evolved-Star-Kit
 ======================
+[![Documentation Status](https://readthedocs.org/projects/dusty-evolved-star-kit/badge/?version=latest)](https://dusty-evolved-star-kit.readthedocs.io/en/latest/?badge=latest)
 
 <img src="docs/dust.jpg"  width="170" height="100">
 
