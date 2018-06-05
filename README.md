@@ -2,7 +2,7 @@
 Dusty-Evolved-Star-Kit
 ======================
 
-<img src="docs/gold.jpg"  width="170" height="100">
+<img src="docs/dust.jpg"  width="170" height="100">
 
 SED-fitting python scripts for fitting data from evolved stars (photometry or spectra) with DUSTY models. Package contains scripts for:
 1. Running DUSTY in a multiprocessing batch mode
@@ -36,7 +36,7 @@ All of the important script files can be found in "/gold-fit/python_scripts"
 
 Just add the csv data files you want to fit to the *put_target_data_here* directory and run sed_fitting.py.
 
-<img src="gold-fit/output_seds.png"  width="400" height="500">
+<img src="dusty-evolved-star-kit/output_seds.png"  width="400" height="500">
 
 Under development
 -----------------
