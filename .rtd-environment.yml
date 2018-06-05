@@ -1,0 +1,12 @@
+name: dusty-evolved-star-kit
+
+channels:
+    - astropy
+
+dependencies:
+    - astropy
+    - Cython
+    - matplotlib
+    - numpy
+#   - pip:
+#       - dependency_from_pip
