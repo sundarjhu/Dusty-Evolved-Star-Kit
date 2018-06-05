@@ -131,4 +131,4 @@ file_a.write('../'+directory_name+'_models.fits', format='fits', overwrite=True)
 
 file_b = Table(np.array(interp_array), names=('grid_name', 'teff', 'tinner', 'number', 'odep', 'mdot', 'vexp'),
                dtype=('U25', 'f8', 'f8', 'i4', 'f8', 'f8', 'f8'))
-file_b.write('../'directory_name+'_outputs.fits', format='fits', overwrite=True)
+file_b.write('../'+directory_name+'_outputs.fits', format='fits', overwrite=True)
