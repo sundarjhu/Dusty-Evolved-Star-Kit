@@ -5,7 +5,7 @@ Dusty-Evolved-Star-Kit
 [![Build Status](https://travis-ci.org/s-goldman/Dusty-Evolved-Star-Kit.svg?branch=master)](https://travis-ci.org/s-goldman/Dusty-Evolved-Star-Kit)
 [![Coverage Status](https://coveralls.io/repos/github/s-goldman/Dusty-Evolved-Star-Kit/badge.svg?branch=master)](https://coveralls.io/github/s-goldman/Dusty-Evolved-Star-Kit?branch=master)
 [![Astropy](http://img.shields.io/badge/powered%20by-AstroPy-orange.svg?style=flat)](http://www.astropy.org)
-[![ADS](http://img.shields.io/badge/arXiv-1606.06182-orange.svg?style=flat)](http://adsabs.harvard.edu/abs/2016arXiv161005761G)
+[![arxiv paper](https://img.shields.io/badge/arXiv-1610.05761-orange.svg)](https://arxiv.org/abs/1610.05761)
 
 <img src="docs/dust.jpg"  width="170" height="100">
 
