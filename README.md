@@ -3,6 +3,7 @@ Dusty-Evolved-Star-Kit
 ======================
 [![Documentation Status](https://readthedocs.org/projects/dusty-evolved-star-kit/badge/?version=latest)](https://dusty-evolved-star-kit.readthedocs.io/en/latest/?badge=latest)
 [![Build Status](https://travis-ci.org/s-goldman/Dusty-Evolved-Star-Kit.svg?branch=master)](https://travis-ci.org/s-goldman/Dusty-Evolved-Star-Kit)
+[![Coverage Status](https://coveralls.io/repos/github/s-goldman/Dusty-Evolved-Star-Kit/badge.svg?branch=master)](https://coveralls.io/github/s-goldman/Dusty-Evolved-Star-Kit?branch=master)
 
 <img src="docs/dust.jpg"  width="170" height="100">
 
