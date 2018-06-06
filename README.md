@@ -49,5 +49,5 @@ Under development
 License
 -------
 
-This project is Copyright (c) Steven Goldman and licensed under
+This project is Copyright (c) Dr. Steven Goldman and licensed under
 the terms of the BSD 3-Clause license.
